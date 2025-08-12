@@ -1,0 +1,127 @@
+name: Remote Config E2E SDK Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_call:
+    inputs:
+      is_workflow_call:
+        description: 'Invoked from a workflow_call'
+        required: false
+        default: true
+        type: boolean
+      amplitude_core_ref:
+        description: 'AmplitudeCore-Swift branch, tag, or commit to test'
+        required: false
+        default: 'main'
+        type: string
+
+jobs:
+  e2e-test:
+    name: E2E Test ${{ matrix.platform }} - Xcode ${{ matrix.xcode }} - OS ${{ matrix.test-destination-os }}
+    runs-on: macos-15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: iOS
+            xcode: 16.1
+            device: "iPhone 16"
+            test-destination-os: latest
+
+          # TODO: Commented out during development
+          # - platform: macOS
+          #   xcode: 16.1
+          #   test-destination-os: latest
+
+          # - platform: tvOS
+          #   xcode: 16.1
+          #   test-destination-os: latest
+          #   device: "Apple TV"
+
+          # - platform: watchOS
+          #   xcode: 16.1
+          #   test-destination-os: latest
+          #   device: "Apple Watch Series 10 (42mm)"
+
+          # - platform: visionOS
+          #   xcode: 16.1
+          #   test-destination-os: latest
+          #   device: "Apple Vision Pro"
+    steps:
+      - name: Checkout AmplitudeCore-Swift
+        uses: actions/checkout@v4
+        with:
+          repository: amplitude/AmplitudeCore-Swift
+          ref: ${{ inputs.amplitude_core_ref || 'main' }}
+          path: AmplitudeCore-Swift
+
+      - name: Checkout E2E Test Package
+        uses: actions/checkout@v4
+        with:
+          repository: amplitude/e2e-test-ios
+          ref: ${{ inputs.is_workflow_call && 'main' || github.ref }}
+          path: e2e-test-ios
+
+      - name: Set Xcode ${{ matrix.xcode }}
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_${{ matrix.xcode }}.app
+      
+      - name: ${{ matrix.platform }} Tests
+        working-directory: e2e-test-ios
+        run: |
+          case "${{ matrix.platform }}" in
+            iOS)
+              xcodebuild test \
+                -scheme Amplitude-E2E-Test-Package \
+                -sdk iphonesimulator \
+                -destination 'platform=iOS Simulator,OS=${{ matrix.test-destination-os }},name=${{ matrix.device }}' \
+                -enableCodeCoverage NO \
+                -parallel-testing-enabled NO \
+                AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+              ;;
+            macOS)
+              xcodebuild test \
+                -scheme Amplitude-E2E-Test-Package \
+                -sdk macosx \
+                -destination 'platform=macOS' \
+                -enableCodeCoverage NO \
+                -parallel-testing-enabled NO \
+                AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+              ;;
+            tvOS)
+              xcodebuild test \
+                -scheme Amplitude-E2E-Test-Package \
+                -sdk appletvsimulator \
+                -destination 'platform=tvOS Simulator,OS=${{ matrix.test-destination-os }},name=${{ matrix.device }}' \
+                -enableCodeCoverage NO \
+                -parallel-testing-enabled NO \
+                AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+              ;;
+            watchOS)
+              xcodebuild test \
+                -scheme Amplitude-E2E-Test-Package \
+                -sdk watchsimulator \
+                -destination 'platform=watchOS Simulator,OS=${{ matrix.test-destination-os }},name=${{ matrix.device }}' \
+                -enableCodeCoverage NO \
+                -parallel-testing-enabled NO \
+                AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+              ;;
+            visionOS)
+              xcodebuild test \
+                -scheme Amplitude-E2E-Test-Package \
+                -sdk xrsimulator \
+                -destination 'platform=visionOS Simulator,OS=${{ matrix.test-destination-os }},name=${{ matrix.device }}' \
+                -enableCodeCoverage NO \
+                -parallel-testing-enabled NO \
+                AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+              ;;
+          esac

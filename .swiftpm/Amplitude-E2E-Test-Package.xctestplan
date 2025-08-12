@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "BDA4181C-F460-4EC7-A10D-8E801D715426",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "AMPLITUDE_API_KEY_MODIFIED",
+        "value" : "$(AMPLITUDE_API_KEY_MODIFIED)"
+      },
+      {
+        "key" : "AMPLITUDE_API_KEY_DEFAULT",
+        "value" : "$(AMPLITUDE_API_KEY_DEFAULT)"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "CoreRemoteConfigSDKTests",
+      "name" : "CoreRemoteConfigSDKTests"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CoreRemoteConfigSDKTests",
+        "name" : "CoreRemoteConfigSDKTests"
+      }
+    }
+  ],
+  "version" : 1
+}
