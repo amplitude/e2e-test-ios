@@ -28,29 +28,28 @@ jobs:
       matrix:
         include:
           - platform: iOS
-            xcode: 16.1
+            xcode: 16.4
             device: "iPhone 16"
             test-destination-os: latest
 
-          # TODO: Commented out during development
-          # - platform: macOS
-          #   xcode: 16.1
-          #   test-destination-os: latest
+          - platform: macOS
+            xcode: 16.4
+            test-destination-os: latest
 
-          # - platform: tvOS
-          #   xcode: 16.1
-          #   test-destination-os: latest
-          #   device: "Apple TV"
+          - platform: tvOS
+            xcode: 16.4
+            test-destination-os: latest
+            device: "Apple TV"
 
-          # - platform: watchOS
-          #   xcode: 16.1
-          #   test-destination-os: latest
-          #   device: "Apple Watch Series 10 (42mm)"
+          - platform: watchOS
+            xcode: 16.4
+            test-destination-os: latest
+            device: "Apple Watch Series 10 (42mm)"
 
-          # - platform: visionOS
-          #   xcode: 16.1
-          #   test-destination-os: latest
-          #   device: "Apple Vision Pro"
+          - platform: visionOS
+            xcode: 16.4
+            test-destination-os: 2.5
+            device: "Apple Vision Pro"
     steps:
       - name: Checkout AmplitudeCore-Swift
         uses: actions/checkout@v4
@@ -82,7 +81,10 @@ jobs:
                 -enableCodeCoverage NO \
                 -parallel-testing-enabled NO \
                 AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
-                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }} \
+                AMPLITUDE_API_KEY_EMPTY=${{ secrets.AMPLITUDE_API_KEY_EMPTY }} \
+                AMPLITUDE_API_KEY_NESTED=${{ secrets.AMPLITUDE_API_KEY_NESTED }} \
+                AMPLITUDE_API_KEY_VALID=${{ secrets.AMPLITUDE_API_KEY_VALID }}
               ;;
             macOS)
               xcodebuild test \
@@ -92,7 +94,10 @@ jobs:
                 -enableCodeCoverage NO \
                 -parallel-testing-enabled NO \
                 AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
-                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }} \
+                AMPLITUDE_API_KEY_EMPTY=${{ secrets.AMPLITUDE_API_KEY_EMPTY }} \
+                AMPLITUDE_API_KEY_NESTED=${{ secrets.AMPLITUDE_API_KEY_NESTED }} \
+                AMPLITUDE_API_KEY_VALID=${{ secrets.AMPLITUDE_API_KEY_VALID }}
               ;;
             tvOS)
               xcodebuild test \
@@ -102,7 +107,10 @@ jobs:
                 -enableCodeCoverage NO \
                 -parallel-testing-enabled NO \
                 AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
-                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }} \
+                AMPLITUDE_API_KEY_EMPTY=${{ secrets.AMPLITUDE_API_KEY_EMPTY }} \
+                AMPLITUDE_API_KEY_NESTED=${{ secrets.AMPLITUDE_API_KEY_NESTED }} \
+                AMPLITUDE_API_KEY_VALID=${{ secrets.AMPLITUDE_API_KEY_VALID }}
               ;;
             watchOS)
               xcodebuild test \
@@ -112,7 +120,10 @@ jobs:
                 -enableCodeCoverage NO \
                 -parallel-testing-enabled NO \
                 AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
-                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }} \
+                AMPLITUDE_API_KEY_EMPTY=${{ secrets.AMPLITUDE_API_KEY_EMPTY }} \
+                AMPLITUDE_API_KEY_NESTED=${{ secrets.AMPLITUDE_API_KEY_NESTED }} \
+                AMPLITUDE_API_KEY_VALID=${{ secrets.AMPLITUDE_API_KEY_VALID }}
               ;;
             visionOS)
               xcodebuild test \
@@ -122,6 +133,9 @@ jobs:
                 -enableCodeCoverage NO \
                 -parallel-testing-enabled NO \
                 AMPLITUDE_API_KEY_DEFAULT=${{ secrets.AMPLITUDE_API_KEY_DEFAULT }} \
-                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }}
+                AMPLITUDE_API_KEY_MODIFIED=${{ secrets.AMPLITUDE_API_KEY_MODIFIED }} \
+                AMPLITUDE_API_KEY_EMPTY=${{ secrets.AMPLITUDE_API_KEY_EMPTY }} \
+                AMPLITUDE_API_KEY_NESTED=${{ secrets.AMPLITUDE_API_KEY_NESTED }} \
+                AMPLITUDE_API_KEY_VALID=${{ secrets.AMPLITUDE_API_KEY_VALID }}
               ;;
           esac

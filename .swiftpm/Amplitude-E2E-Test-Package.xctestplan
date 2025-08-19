@@ -15,6 +15,18 @@
         "value" : "$(AMPLITUDE_API_KEY_MODIFIED)"
       },
       {
+        "key" : "AMPLITUDE_API_KEY_EMPTY",
+        "value" : "$(AMPLITUDE_API_KEY_EMPTY)"
+      },
+      {
+        "key" : "AMPLITUDE_API_KEY_NESTED",
+        "value" : "$(AMPLITUDE_API_KEY_NESTED)"
+      },
+      {
+        "key" : "AMPLITUDE_API_KEY_VALID",
+        "value" : "$(AMPLITUDE_API_KEY_VALID)"
+      },
+      {
         "key" : "AMPLITUDE_API_KEY_DEFAULT",
         "value" : "$(AMPLITUDE_API_KEY_DEFAULT)"
       }
