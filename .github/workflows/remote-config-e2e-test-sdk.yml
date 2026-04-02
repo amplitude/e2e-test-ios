@@ -52,14 +52,14 @@ jobs:
             device: "Apple Vision Pro"
     steps:
       - name: Checkout AmplitudeCore-Swift
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: amplitude/AmplitudeCore-Swift
           ref: ${{ inputs.amplitude_core_ref || 'main' }}
           path: AmplitudeCore-Swift
 
       - name: Checkout E2E Test Package
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: amplitude/e2e-test-ios
           ref: ${{ inputs.is_workflow_call && 'main' || github.ref }}
